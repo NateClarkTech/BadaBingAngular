@@ -8,10 +8,7 @@ import { FooterComponent } from './footer/footer.component';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent],
-  template: `<main>
-              <app-navbar></app-navbar>
-              <app-footer></app-footer>
-            <main>`,
+  templateUrl: 'app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
