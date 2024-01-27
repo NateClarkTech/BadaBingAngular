@@ -13,7 +13,7 @@ import { ToppingListComponent } from './topping-list/topping-list.component';
   styleUrl: './order.component.css'
 })
 export class OrderComponent{
-  menu: MenuSection[] = MENU
+  menu: MenuSection[] = MENU;
   orderTotal: number = 0;
   orderContents: MenuItem[] = []
 

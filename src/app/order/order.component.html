@@ -25,7 +25,7 @@
       <div class="mx-auto">
         <h4>Order:</h4>
         <div class="row" *ngFor="let product of orderContents; index as i;">
-          <h6 class="col-6 my-auto">{{product.itemName}}</h6>
+          <h6 class="col-6 my-auto">{{product.itemName}} - ${{product.itemPrice}}</h6>
           <button class="btn btn-outline-danger my-1 col-6" (click)="removeFromOrder(i)">Remove From Order</button>
         </div>
         <h4>Price: ${{orderTotal.toFixed(2)}}</h4>
