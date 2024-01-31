@@ -165,9 +165,9 @@ export const MENU: MenuSection[] = [
             },
         ],
         sectionDescription: "Toppings: Extra Cheese, Meatballs, Tomatoes, Sausage, Hot Cherry Peppers, Mushrooms," +
-                            "Artichokes, Onions, Black Olives, Green Peppers, Ricotta Cheese, Salami, Ham, Pepperoni,"+ 
-                            "Chicken, Bacon, Peppercini, Pineapple, Anchovies, Spinach, Roasted Red Peppers" +
-                            "\nPrice per topping: Sheet - $2.00, Whole pizza - $1.75, Slice",
+                            " Artichokes, Onions, Black Olives, Green Peppers, Ricotta Cheese, Salami, Ham, Pepperoni,"+ 
+                            " Chicken, Bacon, Peppercini, Pineapple, Anchovies, Spinach, Roasted Red Peppers.  " +
+                            "\nPrice per topping: Sheet - $2.00, Whole pizza - $1.75, Slice - $0.50",
         extraOptions: ["Extra Cheese", "Meatballs", "Tomatoes", "Sausage", "Hot Cherry Peppers", "Mushrooms", "Artichokes",
                         "Onions", "Black Olives", "Green Peppers", "Richotta Cheese", "Salami", "Ham", "Pepperoni", "Chicken",
                         "Bacon", "Peppercini", "Pineapple", "Anchovies", "Spinach", "Roasted Red Peppers"]

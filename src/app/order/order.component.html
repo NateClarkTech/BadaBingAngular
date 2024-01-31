@@ -2,15 +2,20 @@
 <div class="container-lg bg-light border border-success px-5">
   <div class="row">
     <div class="col-6 d-flex flex-column" *ngFor="let menuSection of menu" [ngSwitch]="true">
+      <!--Menu section for pizza-->
       <div *ngSwitchCase="menuSection.sectionName === 'Pizza'">
         <h5 class="text-center">{{menuSection.sectionName}}</h5>
+        <p class="text-center newline">{{menuSection.sectionDescription}}</p>
         <div class="row justify-content-around" *ngFor="let menuItem of menuSection.sectionItems">
           <label class="col-8">{{menuItem.itemName}} - $ {{menuItem.itemPrice.toFixed(2)}}</label>
-          <button class="col-4 btn btn-outline-success my-1" type="button" data-bs-toggle="modal" data-bs-target="#pizzaToppingsSelection">Add to Order</button>
+          <button class="col-4 btn btn-outline-success my-1" type="button" data-bs-toggle="modal" 
+           data-bs-target="#pizzaToppingsSelection" (click)="updateSelectedPizza(menuItem.itemName)">Add to Order</button>
         </div>
       </div>
+      <!--Menu section with no special logic-->
       <div *ngSwitchDefault>
         <h5 class="text-center">{{menuSection.sectionName}}</h5>
+        <p class="text-center">{{menuSection.sectionDescription}}</p>
         <div class="row justify-content-around" *ngFor="let menuItem of menuSection.sectionItems;">
           <label class="col-8">{{menuItem.itemName}} - $ {{menuItem.itemPrice.toFixed(2)}}</label>
           <button class="col-4 btn btn-outline-success my-1" (click)="addToOrder(menuItem);">Add to Order</button>
@@ -25,12 +30,12 @@
       <div class="mx-auto">
         <h4>Order:</h4>
         <div class="row" *ngFor="let product of orderContents; index as i;">
-          <h6 class="col-6 my-auto">{{product.itemName}} - ${{product.itemPrice}}</h6>
+          <h6 class="col-6 my-auto">{{product.itemName}} - ${{product.itemPrice.toFixed(2)}}</h6>
           <button class="btn btn-outline-danger my-1 col-6" (click)="removeFromOrder(i)">Remove From Order</button>
         </div>
         <h4>Price: ${{orderTotal.toFixed(2)}}</h4>
         <br>
-        <button class="btn btn-outline-success btn-lg my-1 fs-4 fw-semibold" type="button">Complete Order</button>
+        <button class="btn btn-outline-success btn-lg my-1 fs-4 fw-semibold" type="button" (click)="completeOrder();">Complete Order</button>
       </div>
     </div>
   </div>
@@ -44,19 +49,62 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
+        <h4 class="modal-title">Select Your Toppings</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-          <app-topping-list></app-topping-list>
+        <form id="pizzaToppingSelector">
+          <div class="row">
+              <div class="row col-6" *ngFor="let topping of menu[4].extraOptions">
+                  <label class="col-8 my-auto">{{topping}}</label>
+                  <input class="my-auto col-4"  type="checkbox" (change)="onChange(topping)" name="topping">
+              </div>
+          </div>
+      </form>
       </div>
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success">Add to Order</button>
-        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" >Close</button>
+
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal"
+        (click)="addToOrderPizza(); clearCheckboxInput('topping')">Add to Order</button>
+
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" 
+        (click)="updateSelectedPizza(''); clearCheckboxInput('topping');">Close</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal (From W3School https://www.w3schools.com/bootstrap5/bootstrap_modal.php )-->
+<div class="modal" id="pizzaToppingsSelection">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Order Complete</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h4>Order number: #{{orderNumber}}</h4>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal"
+        (click)="addToOrderPizza(); clearCheckboxInput('topping')">Add to Order</button>
+
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" 
+        (click)="updateSelectedPizza(''); clearCheckboxInput('topping');">Close</button>
+
       </div>
 
     </div>

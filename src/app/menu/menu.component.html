@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-6" *ngFor="let menuSection of menu; let i = index">
       <h2>{{menuSection.sectionName}}</h2>
-      <p *ngIf="menuSection.sectionDescription">{{menuSection.sectionDescription}}</p>
+      <p class="newline" *ngIf="menuSection.sectionDescription">{{menuSection.sectionDescription}}</p>
       <div *ngFor="let menuItem of menuSection.sectionItems">
         <h5>{{menuItem.itemName}} - ${{menuItem.itemPrice.toFixed(2)}}</h5>
         <p *ngIf="menuItem.itemDescription">{{menuItem.itemDescription}}</p>
