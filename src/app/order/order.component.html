@@ -34,8 +34,22 @@
           <button class="btn btn-outline-danger my-1 col-6" (click)="removeFromOrder(i)">Remove From Order</button>
         </div>
         <h4>Price: ${{orderTotal.toFixed(2)}}</h4>
+        <div *ngIf="!tipGiven">
+          <h6>Suggested gratuity: ${{(orderTotal * 0.15).toFixed(2)}}</h6>
+          <form id="tip" (submit)="addTip(tipAmount.value);">
+            <label>Tip amount: </label>
+            <input class="mx-2"
+              type="number" 
+              id="tipAmount" 
+              name="tipAmount" 
+              min="0.1"
+              [(ngModel)]="tip"
+              #tipAmount="ngModel"/>
+            <button class="btn-outline-success" type="submit" [disabled]="tipAmount.invalid">Add Tip</button>
+          </form>
+        </div>
         <br>
-        <button class="btn btn-outline-success btn-lg my-1 fs-4 fw-semibold" type="button" (click)="completeOrder();">Complete Order</button>
+        <button class="btn btn-outline-success btn-lg my-1 fs-4 fw-semibold" type="button" (click)="completeOrder()" data-bs-toggle="modal" data-bs-target="#orderComplete" >Complete Order</button>
       </div>
     </div>
   </div>
@@ -50,7 +64,6 @@
       <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">Select Your Toppings</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Modal body -->
@@ -81,32 +94,53 @@
 </div>
 
 <!-- The Modal (From W3School https://www.w3schools.com/bootstrap5/bootstrap_modal.php )-->
-<div class="modal" id="pizzaToppingsSelection">
+<div class="modal" id="orderComplete" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div *ngIf="orderContents.length !== 0; then thenBlock else elseBlock"></div>
+    <ng-template  #thenBlock>
+      <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Order Complete</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title text-success">Order Complete</h4>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <h4>Order number: #{{orderNumber}}</h4>
+          <h4>Order Price: ${{orderTotal.toFixed(2)}}</h4>
+          <h4>Your order will be ready for pickup at:</h4>
+          <h4>{{timeTillOrderComplete | date:'shortTime'}}</h4>
+          <br>
+          <h4>Thank you for your order!</h4>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" (click)="clearOrder()">Close</button>
+        </div>
+
       </div>
+    </ng-template>
+    <ng-template #elseBlock>
+      <div class="modal-content">
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        <h4>Order number: #{{orderNumber}}</h4>
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title text-danger">Error: Empty Cart</h4>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <h4>Please add something to your order.</h4>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+
       </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-
-        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal"
-        (click)="addToOrderPizza(); clearCheckboxInput('topping')">Add to Order</button>
-
-        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" 
-        (click)="updateSelectedPizza(''); clearCheckboxInput('topping');">Close</button>
-
-      </div>
-
-    </div>
+    </ng-template>
   </div>
 </div>

@@ -3,12 +3,12 @@ import { MENU } from '../menu/menuContents';
 import { MenuSection } from '../menu/menuSection';
 import { MenuItem } from '../menu/menuItem';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule } from '@angular/forms';
-import { ToppingListComponent } from './topping-list/topping-list.component';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToppingListComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css'
 })
@@ -19,6 +19,9 @@ export class OrderComponent{
   selectedPizza: string = ''; //A state of the selected pizza.
   selectedToppings: string[] = [];
   orderNumber = 0;
+  timeTillOrderComplete: number = Date.now();
+  tip : number = 0;
+  tipGiven : boolean = false;
 
 
   /**
@@ -46,7 +49,14 @@ export class OrderComponent{
     });
   } 
 
-  addToOrderNameAndPrice(productName: string, productPrice: number) : void {
+  /**
+   * Allows custom menu items to be added to the order based on a given string (name) and number (price).
+   *
+   * @param {string} productName - name of a menu item
+   * @param {number} productPrice - the price of the menu item
+   * @returns {void}
+   */
+  private addToOrderNameAndPrice(productName: string, productPrice: number) : void {
     let menuItem: MenuItem = {
       itemName: productName,
       itemPrice: productPrice,
@@ -56,7 +66,12 @@ export class OrderComponent{
 
   }
 
-  addToOrderPizza()  {
+  /**
+   * adds a pizza to the order, calulates price based on size and selectedToppings
+   *
+   * @returns {void}
+   */
+  addToOrderPizza() : void {
     let orderString : string = this.selectedPizza;
     let price: number;
 
@@ -64,6 +79,7 @@ export class OrderComponent{
       orderString = orderString + ", " + topping;
     }
 
+    //check currently selected pizza and add it to the order with the right price and toppings.
     switch(this.selectedPizza) {
       case "One Slice": 
         price = 2.25;
@@ -91,6 +107,7 @@ export class OrderComponent{
         break;
 
       default:
+        //Fallback case: if this occurs then there is a bug in the program or data tampering.
         console.log("ERROR IN ORDER PIZZA: INVALID PIZZA TYPE GIVEN")
         return;
     }
@@ -99,17 +116,32 @@ export class OrderComponent{
     this.selectedPizza = '';
   }
 
+    /**
+   * When a topping checkbox is checked or unchecked it adds/removes the topping from the selected toppings.
+   *
+   * @param {string} topping - the name of the topping added to the pizza
+   * @returns {void}
+   */
   onChange(topping: string): void{
+    //if the selected topping is in the selectedToppings array then it must be the case that the topping was unselected
     if (this.selectedToppings.includes(topping)) {
       this.selectedToppings = this.selectedToppings.filter((item) => item !== topping);
-    } else {
+    } 
+    
+    //else the topping was selected to be on the pizza so add it to selectedToppings
+    else { 
       this.selectedToppings.push(topping);
     }
-    //send toppings array to parent
     console.log(this.selectedToppings);
   }
 
-  clearCheckboxInput(formID: string){
+  /**
+ * Resets a checkbox form to all be unchecked
+ *
+ * @param {string} formID - the checkbox form to reset
+ * @returns {void}
+ */
+  clearCheckboxInput(formID: string) : void {
     let formToEmpty = document.getElementsByName(formID)! as NodeListOf<HTMLInputElement>; //used chatGPT to get this line of code, I tried using what I used in ISP1 but it didn't work
 
     for (var i = 0; i < formToEmpty.length; i++){
@@ -120,6 +152,14 @@ export class OrderComponent{
     } 
   }
   
+  /**
+ * Adds a tip of the given amount to the order.
+ *
+ * Note: I am sure there is a better way to design this aspect of the page
+ *       when it comes to ordering pizzas.
+ * @param {string} selectedPizza - The currently selected pizza
+ * @returns {void}
+ */
   updateSelectedPizza(selectedPizza : string) : void {
     this.selectedPizza = selectedPizza;
     console.log("Selected Pizza: " + this.selectedPizza)
@@ -139,13 +179,35 @@ export class OrderComponent{
     }
   }
 
+  /**
+ * Adds a tip of the given amount to the order.
+ *
+ * @param {number} tip - The tip added to order
+ * @returns {void}
+ */
+  addTip(tip: number) : void {    
+    this.orderTotal = this.orderTotal + tip;
+    this.tipGiven = true;
+  }
 
+  /**
+   * Completes the order and calculates when the order will be complete (15 min after current user time)
+   * 
+   * @returns {void}
+   */
   completeOrder() : void {
+    this.timeTillOrderComplete = Date.now() + 900000; //get current time and add 15 minutes (900000 milliseconds = 15 min)
+    this.orderNumber = Math.floor(Math.random() * 1000);
+  }
 
-    this.orderContents = []
+  /**
+ * Resets the order by reseting the order array and price.
+ * 
+ * @returns {void}
+ */
+  clearOrder() : void {
+    this.orderContents = [];
     this.orderTotal = 0;
-
-    this.orderNumber = Math.floor(Math.random())
-
+    this.tipGiven = false;
   }
 }
