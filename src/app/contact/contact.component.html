@@ -1,26 +1,38 @@
 <!--Page Contents Start-->
 <div class="container-lg bg-light border border-success text-center min-vh-100">
     <div>
+
+      <!--Contant form content Start-->
       <fieldset class="d-flex mt-5 flex-column">
         <div class="mx-auto row ">
           <form class="text-start" [formGroup]="contactForm" (ngSubmit)="submitForm()">
             <legend class="pt-2">Get in contact with us:</legend>
+
+            <!--First name-->
             <div class="col-12 d-flex justify-content-between">
               <label class="mr-auto">First Name</label> 
               <input type="text" formControlName="firstName" required>
             </div>
+
+            <!--Last name-->
             <div class="col-12 d-flex justify-content-between">
               <label class="mr-auto">Last Name</label> 
               <input type="text" required formControlName="lastName">
             </div>
+
+            <!--Email-->
             <div class="col-12 d-flex justify-content-between">
               <label class="mr-auto">Email</label> 
               <input type="text" formControlName="email" required>
             </div>
+
+            <!--Phone numbe-->
             <div class="col-12 d-flex justify-content-between">
               <label class="mr-auto">Phone Number</label> 
               <input type="number" formControlName="phoneNumber" required>
             </div>
+
+            <!--User input text box-->
             <div class="col-12 row mx-auto">
               <p class="text-center my-4">Message to us</p>
               <textarea rows="5" cols="33" formControlName="message"></textarea>
@@ -29,6 +41,8 @@
           </form>
         </div>
       </fieldset>
+      <!--Contant form content End-->
+
     </div>
 
     <div class="my-5">

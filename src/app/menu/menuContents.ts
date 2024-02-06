@@ -1,5 +1,18 @@
 import { MenuSection } from "./menuSection";
 
+//Menu as a data strucutre.
+//format as a list of menuSections which is desinged as the following:
+// sectionName: 
+// sectionItems {[ //name of section
+//    itemName: // name of item ,
+//    itemPrice: //price of item ,
+//    (optional) itemDescription: //item description 
+//  ]},
+// sectionDescription: //description of section
+// (optional) extraOptions : //extra options for section (This was a design choice for the pizza section. 
+//                             it is a poor design choice and should be redesigned properly.)
+
+
 export const MENU: MenuSection[] = [
     {
         sectionName: 'Chicken',

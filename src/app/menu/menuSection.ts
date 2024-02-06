@@ -1,5 +1,6 @@
 import { MenuItem } from "./menuItem";
 
+//data struct for a menu section
 export interface MenuSection{
     sectionName: string;
     sectionItems: MenuItem[];
